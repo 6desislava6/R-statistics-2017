@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Преговор и задачи</title>
+    <meta charset="utf-8">
+    <style>
+      @import url(https://fonts.googleapis.com/css?family=Yanone+Kaffeesatz);
+      @import url(https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic);
+      @import url(https://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700,400italic);
+
+      body { font-family: 'Droid Serif'; }
+      h1, h2, h3 {
+        font-family: 'Yanone Kaffeesatz';
+        font-weight: normal;
+      }
+      .remark-code, .remark-inline-code { font-family: 'Ubuntu Mono'; }
+    </style>
+  </head>
+  <body>
+    <textarea id="source">
+
+class: center, middle
+
+# Въпроси
+---
+# Какви данни има в статистиката?
+---
+# Индексиране на масиви
+1. как да вземем втория елемент?
+2. как да вземем втория и третия елемент?
+* с числа
+* с булеви стойности
+* как да вземем всички без втория и третия елемент?
+* как да разберем кои елементи (на кои индекси стоят те) изпълняват някакво условие?
+* как сега да ги вземем тези елементи? (примери за два начина)
+* по-сложни условия - сечение, обединение
+---
+
+# Dataframes
+* как се строят
+* какво правят head, tail, dim, ncol, nrow
+* names
+---
+# Dataframes2
+
+* Как да вземем (i, j) елемент? i-ия ред? j-ия стълб?
+* Как да вземем първия и третия стълб? а ред?
+
+---
+# Други
+* Помните ли какво правят: seq, a:b?
+* Какво ще ни върне c(1,2,3) + c(1,2,3)?
+* ами c(1,2,3) + c(4,5)?
+* cut - категоризира данните. 
+
+---
+# Статистически функции
+* var, sd, mean, fivenum, summary, quantile
+
+---
+# Table
+* table(cut(x, breaks=c(...))
+* table
+* за какви данни се ползва?
+* prop.table(от таблица)
+* prop.table(...,1|2)
+* rowsum, colsum
+
+---
+# barplot
+* за какви данни се ползва?
+* Да припомним какво прави аргументът: beside
+
+---
+# piechart
+* за какви данни се ползва?
+* Да припомним какво прави аргументът: col
+* rainbow
+
+--
+# histogram
+* за какви данни се ползва?
+* prob = TRUE
+* rug(x)
+* simple.freqpoly(x)
+* lines(density(x))
+
+---
+# boxplot
+* boxplot(x)
+* boxplot(x, y, z…)
+* boxplot(y ~ x)
+* stripchart
+
+---
+# Линейни модели
+* lm? lm(y ~ x), coef
+* abline
+* simple.lm(x, y)
+* cor
+---
+# Задачи
+## 4.2 Условие
+
+В библиотеката MASS има данни, заредете ги, attach-нете ги, вижте им имената.
+Намерете връзката между:
+1. manufacturer and shelf
+2. fat and vitamins
+3. fat and shelf
+4. carbohydrates and sugars
+5. fibre and manufacturer
+6. sodium and sugars
+
+---
+# Решение
+```r
+library("MASS")
+data("UScereal")
+attach(UScereal)
+names(UScereal)
+head(UScereal)
+
+# mfr, shelf - categorical
+table(mfr, shelf)
+barplot(table(mfr, shelf), beside = TRUE, legend = T)
+barplot(table(shelf, mfr), beside = TRUE, legend = T)
+
+# fat - numerical, vitamins - categorical
+boxplot(fat ~ vitamins)
+
+# fat - numerical, shelf - categorical
+boxplot(fat ~ shelf)
+
+# two numerical, quantative
+
+boxplot(carbo, sugars)
+
+plot(carbo, sugars)
+abline(lm(sugars ~ carbo))
+cor(carbo, sugars)
+
+```
+---
+# Задача 4.3
+## Условие
+
+Данните mammals представляват данни за тегло на тялото и тегло на мозъка при различни животни.
+Намерете корелациите на Спиърмън, Пиърсън, сравнете ги, начертайте ги на 2д графика, начертайте техните логаритми.
+
+---
+# Решение
+```r
+data("mammals")
+attach(mammals)
+head(mammals)
+
+plot(body, brain)
+plot(log(body), log(brain))
+```
+
+---
+# Задача 4.4
+## Условие
+
+За данните homedata намерете връзка между старите и новите цени.
+Намерете корелацията.
+Махнете Outlier-ите. Намерете корелацията отново.
+Колко ще струва къща сега, която през 1975 е била $75 000?
+
+---
+# Решение
+```r
+data("homedata")
+head(homedata)
+# identify outliers
+attach(homedata)
+plot(y1970, y2000)
+abline(lm(y2000~y1970))
+cor(y1970, y2000)
+
+outliers = identify(y1970, y2000)
+
+plot(y1970[-outliers], y2000[-outliers])
+abline(lm(y2000[-outliers]~y1970[-outliers]))
+cor(y1970[-outliers], y2000[-outliers])
+
+model = lm(y2000 ~ y1970)
+coefs = coef(model)
+b = coefs[1]
+a = coefs[2]
+price75 = a * 75000 + b
+
+```
+---
+
+
+
+    </textarea>
+    <script src="https://remarkjs.com/downloads/remark-latest.min.js">
+    </script>
+    <script>
+      var slideshow = remark.create();
+    </script>
+  </body>
+</html>
