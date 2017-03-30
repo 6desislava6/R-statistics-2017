@@ -1,0 +1,13 @@
+x=c("Yes","No","No","Yes","Yes")
+factor(x)
+table(x)
+table(factor(x))
+
+
+x = scan()
+# 12 .4 5 2 50 8 3 1 4 .25
+cut(x, breaks = c(min(x), 1, 5, max(x)))
+cutted = cut(x, breaks = c(0, 1, 5, 50))
+table(cutted)
+levels(cutted) = c("poor","rich","rolling in it") # ???????? ?????????? ???? ????????????!
+barplot(table(cutted))
