@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hello!</title>
+<link rel="stylesheet" href="https://stackedit.io/res-min/themes/base.css" />
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML"></script>
+</head>
+<body><div class="container"><h1 id="разпределения-и-r">Разпределения и R</h1>
+
+
+
+<h1 id="дискретни-разпределения">Дискретни разпределения</h1>
+
+
+
+<h2 id="бернулиево-разпределение">Бернулиево разпределение</h2>
+
+<p>Бернулиевото разпределение е дискретно разпределение и описва опит, при който вероятността за успех е p, а за неуспех q = 1 - p. <br>
+Ако успех означим с 1, а провал с 0, то:  <br>
+<script type="math/tex; mode=display" id="MathJax-Element-1">
+P(X = 0) = 1 - p, P(X = 1) = p
+</script> <br>
+Очакване и дисперсия: <br>
+<script type="math/tex; mode=display" id="MathJax-Element-2">
+EX = p, VarX =pq 
+</script></p>
+
+
+
+<h2 id="биномно-разпределение">Биномно разпределение</h2>
+
+<p>Биномното разпределение е дискретно разпределение на броя успехи при проведени n независими Бернулиеви опита с вероятност за успех p. Ако с k означим брой успехи, то: <br>
+<script type="math/tex; mode=display" id="MathJax-Element-3">
+P(X = k) = \binom{n}{k}p^k q^{n-1}
+</script> <br>
+<script type="math/tex; mode=display" id="MathJax-Element-4">
+EX = p, VarX =pq 
+</script></p>
+
+<blockquote>
+  <p><strong>R:</strong></p>
+  
+  <ul>
+  <li><code>rbinom(m, n, prob)</code> генерира m експеримента, всеки от който се състои от n опита, всеки опит с вероятност за успех prob.</li>
+  <li><code>dbinom(x, n, prob)</code> дава <strong>P(X = x)</strong>,  <br>
+  <code>dbinom(c(1,2,3,4,5,6), n, prob)</code> ще ни даде вектор от стойностите: [P(X = 1), …, P(X = 6)] <br>
+  За да нарисуваме графиката на теоретичното разпределение в интервала [0, a] правим:  <br>
+  <code>y = dbinom(0:a, n, prob)</code> <br>
+  <code>plot(0:a, y, type = "s")</code></li>
+  <li><code>pbinom(q, n, prob, lower.tail = TRUE)</code>  намира <strong>p</strong> в уравнението <strong>p = P(X &lt; q) </strong> </li>
+  <li><code>qbinom(p, n, prob, lower.tail = TRUE)</code> намира <strong>q</strong> в уравнението <strong>p = P(X &lt; q)</strong></li>
+  </ul>
+</blockquote>
+
+
+
+<h2 id="геометрично-разпределение">Геометрично разпределение</h2>
+
+<p>Геометричното разпределение е дискретно разпределение на броя опити до първи успех. Ако означим с k броя опити, то: <br>
+<script type="math/tex; mode=display" id="MathJax-Element-110">
+P(X = k) = p q^{k-1}
+</script> <br>
+<script type="math/tex; mode=display" id="MathJax-Element-111">
+EX = 1/p, VarX =q/p^2 
+</script></p>
+
+<blockquote>
+  <p><strong>R:</strong></p>
+  
+  <ul>
+  <li><code>rgeom(n, prob)</code> генерира за n експеримента за всеки от тях колко опита са били нужни да постигнем успех.</li>
+  <li><code>dgeom(x, prob, log = FALSE)</code> дава <strong>P(X = x)</strong> <br>
+  <code>dgeom(c(1,2,3,4,5,6), prob, log = FALSE)</code> ще ни даде вектор от стойностите: [P(X = 1), …, P(X = 6)]</li>
+  <li><code>pgeom(q, prob, lower.tail = TRUE)</code> намира <strong>p</strong> в уравнението <strong>p = P(X &lt; q) </strong></li>
+  <li><code>qgeom(p, prob, lower.tail = TRUE)</code> намира <strong>q</strong> в уравнението  <strong>p = P(X &lt; q)</strong></li>
+  </ul>
+</blockquote>
+
+<h2 id="отрицателно-биномно-разпределение">Отрицателно биномно разпределение</h2>
+
+<p>Отрицателното биномно разпределение е дискретно разпределение на броя опити до r-ти успех. Ако с k означим броя опити, то: <br>
+<script type="math/tex; mode=display" id="MathJax-Element-61">
+P(X = k) = \binom{k-1}{r-1}p^rq^{k-r}
+</script> <br>
+<script type="math/tex; mode=display" id="MathJax-Element-62">
+EX = r/p, VarX =rq/p^2 
+</script></p>
+
+<blockquote>
+  <p><strong>R:</strong></p>
+  
+  <ul>
+  <li><code>rnbinom(n, r, prob)</code> генерира n опита от отрицателно биномно разпределение с параметрите r и prob</li>
+  <li><code>dnbinom(x, r, prob)</code> дава <strong>P(X = x)</strong></li>
+  <li><code>pnbinom(q, r, prob, lower.tail = TRUE)</code> намира <strong>p</strong> в уравнението <strong>p = P(X &lt; q) </strong></li>
+  <li><code>qnbinom(p, r, prob, lower.tail = TRUE)</code> намира <strong>q</strong> в уравнението <strong>p = P(X &lt; q) </strong></li>
+  </ul>
+</blockquote>
+
+<h2 id="поасоново-разпределение">Поасоново разпределение</h2>
+
+<p>Поасоновото разпределение е дискретно и описва брой случили се независими събития и ние знаем средния брой случили се събития за интервал от време - това е <script type="math/tex; mode=display" id="MathJax-Element-136">\lambda</script>  <br>
+Ако k е броят случили се събития, то: <br>
+<script type="math/tex; mode=display" id="MathJax-Element-137">
+P(X = k) = \lambda^k\epsilon^{-\lambda}/k! 
+</script> <br>
+<script type="math/tex; mode=display" id="MathJax-Element-138">
+EX = \lambda, VarX = \lambda
+</script></p>
+
+<blockquote>
+  <p><strong>R:</strong></p>
+  
+  <ul>
+  <li><code>rpois(n, lambda)</code> генерира за n експеримента средно във всеки експеримент колко пъти се е случило събитието.</li>
+  <li><code>dpois(x, lambda, log = FALSE)</code> дава <strong>P(X = x)</strong></li>
+  <li><code>ppois(q, lambda, lower.tail = TRUE)</code>  намира <strong>p</strong> в уравнението <strong>p = P(X &lt; q) </strong></li>
+  <li><code>qpois(p, lambda, lower.tail = TRUE)</code> намира <strong>q</strong> в уравнението <strong>p = P(X &lt; q) </strong></li>
+  </ul>
+</blockquote>
+
+
+
+<h2 id="хипергеометрично-разпределение">Хипергеометрично разпределение</h2>
+
+<p>Ако имаме популация с N елемента, k от които имат дадено качество. Ако изберем n елемента от тази популация, P(X = x) ни дава каква е вероятността x от тези n елемента да имат качеството. Вероятността е брой благоприятни случаи, върху всички случаи и е: <br>
+<script type="math/tex; mode=display" id="MathJax-Element-644">
+P(X = k) = \binom{r}{k}\binom{N-r}{n - k}/\binom{N}{n}
+</script> <br>
+<script type="math/tex; mode=display" id="MathJax-Element-645">
+EX = \dfrac {nr} N, VarX =  \dfrac {nr} N \dfrac{N-r}{N} \dfrac{N-n}{N-1}
+</script></p>
+
+<blockquote>
+  <p><strong>Забележка! В R имаме следното:</strong> (от документацията)</p>
+  
+  <p><strong>x - number of white balls drawn without </strong> <br>
+  <strong>m - the number of white balls in the urn.</strong> <br>
+  <strong>n - the number of black balls in the urn.</strong> <br>
+  <strong>k - the number of balls drawn from the urn.</strong></p>
+</blockquote>
+
+<p>Т.е. при нас N = m + n (всички топчета) <br>
+x := k <br>
+m := r <br>
+n := N - r <br>
+k := n</p>
+
+<blockquote>
+  <p><strong>R:</strong></p>
+  
+  <ul>
+  <li><code>rhyper(nn, m, n, k)</code> =&gt; В нашия запис имаме <code>rhyper(nn, r, N - r, n)</code> <br>
+  където nn - number of observations. брой наблюдения (както обикновено първия аргумент на rxxx функция е колко на брой експерименти искаме да генерираме)</li>
+  <li><code>dhyper(x, m, n, k)</code></li>
+  <li><code>phyper(q, m, n, k, lower.tail = TRUE)</code>намира <strong>p</strong> в уравнението <strong>p = P(X &lt; q) </strong></li>
+  <li><code>qhyper(p, m, n, k, lower.tail = TRUE)</code>намира <strong>q</strong> в уравнението <strong>p = P(X &lt; q) </strong></li>
+  </ul>
+</blockquote>
+
+<h1 id="непрекъснати-разпределения">Непрекъснати разпределения</h1>
+
+
+
+<h2 id="равномерно-разпределение">Равномерно разпределение</h2>
+
+<p>В интервала [a, b] наблюдаваме константна вероятност. <br>
+<script type="math/tex; mode=display" id="MathJax-Element-1031">
+f(x) = const, a <= x <= b
+</script> <br>
+<script type="math/tex; mode=display" id="MathJax-Element-1032">
+EX = (b + a) /2, VarX = (a - b)^2 /12
+</script></p>
+
+<blockquote>
+  <p><strong>R:</strong></p>
+  
+  <ul>
+  <li><code>runif(n, min)</code></li>
+  <li><code>dunif(x, min, max)</code> P(X = x)</li>
+  <li><code>punif(q, min, max, lower.tail = TRUE)</code> намира <strong>p</strong> в уравнението <strong>p = P(X &lt; q) </strong></li>
+  <li><code>qunif(p, min, max, lower.tail = TRUE)</code> намира <strong>q</strong> в уравнението <strong>p = P(X &lt; q) </strong></li>
+  </ul>
+</blockquote>
+
+<h2 id="нормално-разпределение">Нормално разпределение</h2>
+
+<p><script type="math/tex; mode=display" id="MathJax-Element-1027">
+f(x) = \dfrac{1}{\sqrt{2\pi\sigma^2}}\epsilon^{\dfrac{-(x-\mu)^2}{2\sigma^2}}
+</script> <br>
+<script type="math/tex; mode=display" id="MathJax-Element-1028">
+EX = \mu, VarX = \sigma^2
+</script></p>
+
+<blockquote>
+  <p><strong>R:</strong></p>
+  
+  <ul>
+  <li><code>rnorm(n, mean = 0, sd = 1)</code> Генерира n опита (пример: генерираме n оценки на ученици, като знаем средната оценка и дисперсията)</li>
+  <li><code>dnorm(x, mean = 0, sd = 1)</code> P(X = x)</li>
+  <li><code>pnorm(q, mean = 0, sd = 1, lower.tail = TRUE)</code>намира <strong>p</strong> в уравнението <strong>p = P(X &lt; q) </strong></li>
+  <li><code>qnorm(p, mean = 0, sd = 1, lower.tail = TRUE)</code>намира <strong>q</strong> в уравнението <strong>p = P(X &lt; q) </strong></li>
+  </ul>
+</blockquote>
+
+<p>Как чертаем графиката в интервала [a, b] със средно mu и стандартно отклонение stand? <br>
+x = seq(from = a, to = b by = 0.1) <br>
+y = dnorm(x, mean = mu, sd = stand) <br>
+plot(x, y, type = “l”)</p>
+
+<h2 id="експопенциално-разпределение">Експопенциално разпределение</h2>
+
+<p>Живот на електроуред. <br>
+Времето до поява на първо събитие също е експоненциално разпределено. <br>
+<script type="math/tex; mode=display" id="MathJax-Element-974">
+f(x) = \lambda \epsilon^{-\lambda x}, x >= 0
+</script><script type="math/tex; mode=display" id="MathJax-Element-975">
+f(x) = 0 , x <0
+</script> <br>
+<script type="math/tex; mode=display" id="MathJax-Element-976">
+EX = 1/\lambda, VarX = 1/\lambda^2
+</script></p>
+
+<blockquote>
+  <p><strong>R:</strong></p>
+  
+  <ul>
+  <li><code>rexp(n, rate)</code></li>
+  <li><code>dexp(x, rate)</code></li>
+  <li><code>pexp(q, rate, lower.tail = TRUE)</code></li>
+  <li><code>qexp(p, rate, lower.tail = TRUE)</code> <br>
+  Ако средното е mu, то rate = 1/mu. <br>
+  Пример 1 събитие на година, търсим вероятността да изминат поне 3 <strong>месеца</strong> до земетресение? =&gt; Ще гледаме месеци - средно се случва 1/12 земетресение в месеца =&gt; rate = 1/12, вероятността е P(T &gt; 3) = e^(-lambda * t) = e ^(-1/12 * 3)</li>
+  </ul>
+</blockquote></div></body>
+</html>
