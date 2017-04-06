@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Hello!</title>
+<title>R - distributions</title>
 <link rel="stylesheet" href="https://stackedit.io/res-min/themes/base.css" />
 <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML"></script>
 </head>
@@ -32,10 +32,9 @@ EX = p, VarX =pq
 <h2 id="биномно-разпределение">Биномно разпределение</h2>
 
 <p>Биномното разпределение е дискретно разпределение на броя успехи при проведени n независими Бернулиеви опита с вероятност за успех p. Ако с k означим брой успехи, то: <br>
-<script type="math/tex; mode=display" id="MathJax-Element-3">
-P(X = k) = \binom{n}{k}p^k q^{n-1}
-</script> <br>
-<script type="math/tex; mode=display" id="MathJax-Element-4">
+<script type="math/tex; mode=display" id="MathJax-Element-25">
+P(X = k) = \binom{n}{k}p^k q^{n-k} </script> <br>
+<script type="math/tex; mode=display" id="MathJax-Element-26">
 EX = p, VarX =pq 
 </script></p>
 
@@ -49,20 +48,18 @@ EX = p, VarX =pq
   За да нарисуваме графиката на теоретичното разпределение в интервала [0, a] правим:  <br>
   <code>y = dbinom(0:a, n, prob)</code> <br>
   <code>plot(0:a, y, type = "s")</code></li>
-  <li><code>pbinom(q, n, prob, lower.tail = TRUE)</code>  намира <strong>p</strong> в уравнението <strong>p = P(X &lt; q) </strong> </li>
-  <li><code>qbinom(p, n, prob, lower.tail = TRUE)</code> намира <strong>q</strong> в уравнението <strong>p = P(X &lt; q)</strong></li>
+  <li><code>pbinom(q, n, prob, lower.tail = TRUE)</code>  намира <strong>p</strong> в уравнението <strong>p = P(X &lt;= q) </strong> </li>
+  <li><code>qbinom(p, n, prob, lower.tail = TRUE)</code> намира <strong>q</strong> в уравнението <strong>p = P(X &lt;= q)</strong></li>
   </ul>
 </blockquote>
-
-
 
 <h2 id="геометрично-разпределение">Геометрично разпределение</h2>
 
 <p>Геометричното разпределение е дискретно разпределение на броя опити до първи успех. Ако означим с k броя опити, то: <br>
-<script type="math/tex; mode=display" id="MathJax-Element-110">
+<script type="math/tex; mode=display" id="MathJax-Element-29">
 P(X = k) = p q^{k-1}
 </script> <br>
-<script type="math/tex; mode=display" id="MathJax-Element-111">
+<script type="math/tex; mode=display" id="MathJax-Element-30">
 EX = 1/p, VarX =q/p^2 
 </script></p>
 
@@ -73,18 +70,18 @@ EX = 1/p, VarX =q/p^2
   <li><code>rgeom(n, prob)</code> генерира за n експеримента за всеки от тях колко опита са били нужни да постигнем успех.</li>
   <li><code>dgeom(x, prob, log = FALSE)</code> дава <strong>P(X = x)</strong> <br>
   <code>dgeom(c(1,2,3,4,5,6), prob, log = FALSE)</code> ще ни даде вектор от стойностите: [P(X = 1), …, P(X = 6)]</li>
-  <li><code>pgeom(q, prob, lower.tail = TRUE)</code> намира <strong>p</strong> в уравнението <strong>p = P(X &lt; q) </strong></li>
-  <li><code>qgeom(p, prob, lower.tail = TRUE)</code> намира <strong>q</strong> в уравнението  <strong>p = P(X &lt; q)</strong></li>
+  <li><code>pgeom(q, prob, lower.tail = TRUE)</code> намира <strong>p</strong> в уравнението <strong>p = P(X &lt;= q) </strong></li>
+  <li><code>qgeom(p, prob, lower.tail = TRUE)</code> намира <strong>q</strong> в уравнението  <strong>p = P(X &lt;= q)</strong></li>
   </ul>
 </blockquote>
 
 <h2 id="отрицателно-биномно-разпределение">Отрицателно биномно разпределение</h2>
 
 <p>Отрицателното биномно разпределение е дискретно разпределение на броя опити до r-ти успех. Ако с k означим броя опити, то: <br>
-<script type="math/tex; mode=display" id="MathJax-Element-61">
+<script type="math/tex; mode=display" id="MathJax-Element-33">
 P(X = k) = \binom{k-1}{r-1}p^rq^{k-r}
 </script> <br>
-<script type="math/tex; mode=display" id="MathJax-Element-62">
+<script type="math/tex; mode=display" id="MathJax-Element-34">
 EX = r/p, VarX =rq/p^2 
 </script></p>
 
@@ -94,19 +91,19 @@ EX = r/p, VarX =rq/p^2
   <ul>
   <li><code>rnbinom(n, r, prob)</code> генерира n опита от отрицателно биномно разпределение с параметрите r и prob</li>
   <li><code>dnbinom(x, r, prob)</code> дава <strong>P(X = x)</strong></li>
-  <li><code>pnbinom(q, r, prob, lower.tail = TRUE)</code> намира <strong>p</strong> в уравнението <strong>p = P(X &lt; q) </strong></li>
-  <li><code>qnbinom(p, r, prob, lower.tail = TRUE)</code> намира <strong>q</strong> в уравнението <strong>p = P(X &lt; q) </strong></li>
+  <li><code>pnbinom(q, r, prob, lower.tail = TRUE)</code> намира <strong>p</strong> в уравнението <strong>p = P(X &lt;= q) </strong></li>
+  <li><code>qnbinom(p, r, prob, lower.tail = TRUE)</code> намира <strong>q</strong> в уравнението <strong>p = P(X &lt;= q) </strong></li>
   </ul>
 </blockquote>
 
 <h2 id="поасоново-разпределение">Поасоново разпределение</h2>
 
-<p>Поасоновото разпределение е дискретно и описва брой случили се независими събития и ние знаем средния брой случили се събития за интервал от време - това е <script type="math/tex; mode=display" id="MathJax-Element-136">\lambda</script>  <br>
+<p>Поасоновото разпределение е дискретно и описва брой случили се независими събития и ние знаем средния брой случили се събития за интервал от време - това е <script type="math/tex; mode=display" id="MathJax-Element-38">\lambda</script>  <br>
 Ако k е броят случили се събития, то: <br>
-<script type="math/tex; mode=display" id="MathJax-Element-137">
+<script type="math/tex; mode=display" id="MathJax-Element-39">
 P(X = k) = \lambda^k\epsilon^{-\lambda}/k! 
 </script> <br>
-<script type="math/tex; mode=display" id="MathJax-Element-138">
+<script type="math/tex; mode=display" id="MathJax-Element-40">
 EX = \lambda, VarX = \lambda
 </script></p>
 
@@ -116,20 +113,18 @@ EX = \lambda, VarX = \lambda
   <ul>
   <li><code>rpois(n, lambda)</code> генерира за n експеримента средно във всеки експеримент колко пъти се е случило събитието.</li>
   <li><code>dpois(x, lambda, log = FALSE)</code> дава <strong>P(X = x)</strong></li>
-  <li><code>ppois(q, lambda, lower.tail = TRUE)</code>  намира <strong>p</strong> в уравнението <strong>p = P(X &lt; q) </strong></li>
-  <li><code>qpois(p, lambda, lower.tail = TRUE)</code> намира <strong>q</strong> в уравнението <strong>p = P(X &lt; q) </strong></li>
+  <li><code>ppois(q, lambda, lower.tail = TRUE)</code>  намира <strong>p</strong> в уравнението <strong>p = P(X &lt;= q) </strong></li>
+  <li><code>qpois(p, lambda, lower.tail = TRUE)</code> намира <strong>q</strong> в уравнението <strong>p = P(X &lt;= q) </strong></li>
   </ul>
 </blockquote>
-
-
 
 <h2 id="хипергеометрично-разпределение">Хипергеометрично разпределение</h2>
 
 <p>Ако имаме популация с N елемента, k от които имат дадено качество. Ако изберем n елемента от тази популация, P(X = x) ни дава каква е вероятността x от тези n елемента да имат качеството. Вероятността е брой благоприятни случаи, върху всички случаи и е: <br>
-<script type="math/tex; mode=display" id="MathJax-Element-644">
+<script type="math/tex; mode=display" id="MathJax-Element-43">
 P(X = k) = \binom{r}{k}\binom{N-r}{n - k}/\binom{N}{n}
 </script> <br>
-<script type="math/tex; mode=display" id="MathJax-Element-645">
+<script type="math/tex; mode=display" id="MathJax-Element-44">
 EX = \dfrac {nr} N, VarX =  \dfrac {nr} N \dfrac{N-r}{N} \dfrac{N-n}{N-1}
 </script></p>
 
@@ -155,8 +150,8 @@ k := n</p>
   <li><code>rhyper(nn, m, n, k)</code> =&gt; В нашия запис имаме <code>rhyper(nn, r, N - r, n)</code> <br>
   където nn - number of observations. брой наблюдения (както обикновено първия аргумент на rxxx функция е колко на брой експерименти искаме да генерираме)</li>
   <li><code>dhyper(x, m, n, k)</code></li>
-  <li><code>phyper(q, m, n, k, lower.tail = TRUE)</code>намира <strong>p</strong> в уравнението <strong>p = P(X &lt; q) </strong></li>
-  <li><code>qhyper(p, m, n, k, lower.tail = TRUE)</code>намира <strong>q</strong> в уравнението <strong>p = P(X &lt; q) </strong></li>
+  <li><code>phyper(q, m, n, k, lower.tail = TRUE)</code>намира <strong>p</strong> в уравнението <strong>p = P(X &lt;= q) </strong></li>
+  <li><code>qhyper(p, m, n, k, lower.tail = TRUE)</code>намира <strong>q</strong> в уравнението <strong>p = P(X &lt;= q) </strong></li>
   </ul>
 </blockquote>
 
@@ -167,10 +162,10 @@ k := n</p>
 <h2 id="равномерно-разпределение">Равномерно разпределение</h2>
 
 <p>В интервала [a, b] наблюдаваме константна вероятност. <br>
-<script type="math/tex; mode=display" id="MathJax-Element-1031">
+<script type="math/tex; mode=display" id="MathJax-Element-13">
 f(x) = const, a <= x <= b
 </script> <br>
-<script type="math/tex; mode=display" id="MathJax-Element-1032">
+<script type="math/tex; mode=display" id="MathJax-Element-14">
 EX = (b + a) /2, VarX = (a - b)^2 /12
 </script></p>
 
@@ -178,19 +173,21 @@ EX = (b + a) /2, VarX = (a - b)^2 /12
   <p><strong>R:</strong></p>
   
   <ul>
-  <li><code>runif(n, min)</code></li>
+  <li><code>runif(n, min, max)</code></li>
   <li><code>dunif(x, min, max)</code> P(X = x)</li>
   <li><code>punif(q, min, max, lower.tail = TRUE)</code> намира <strong>p</strong> в уравнението <strong>p = P(X &lt; q) </strong></li>
   <li><code>qunif(p, min, max, lower.tail = TRUE)</code> намира <strong>q</strong> в уравнението <strong>p = P(X &lt; q) </strong></li>
   </ul>
 </blockquote>
 
+
+
 <h2 id="нормално-разпределение">Нормално разпределение</h2>
 
-<p><script type="math/tex; mode=display" id="MathJax-Element-1027">
+<p><script type="math/tex; mode=display" id="MathJax-Element-47">
 f(x) = \dfrac{1}{\sqrt{2\pi\sigma^2}}\epsilon^{\dfrac{-(x-\mu)^2}{2\sigma^2}}
 </script> <br>
-<script type="math/tex; mode=display" id="MathJax-Element-1028">
+<script type="math/tex; mode=display" id="MathJax-Element-48">
 EX = \mu, VarX = \sigma^2
 </script></p>
 
@@ -200,8 +197,8 @@ EX = \mu, VarX = \sigma^2
   <ul>
   <li><code>rnorm(n, mean = 0, sd = 1)</code> Генерира n опита (пример: генерираме n оценки на ученици, като знаем средната оценка и дисперсията)</li>
   <li><code>dnorm(x, mean = 0, sd = 1)</code> P(X = x)</li>
-  <li><code>pnorm(q, mean = 0, sd = 1, lower.tail = TRUE)</code>намира <strong>p</strong> в уравнението <strong>p = P(X &lt; q) </strong></li>
-  <li><code>qnorm(p, mean = 0, sd = 1, lower.tail = TRUE)</code>намира <strong>q</strong> в уравнението <strong>p = P(X &lt; q) </strong></li>
+  <li><code>pnorm(q, mean = 0, sd = 1, lower.tail = TRUE)</code>намира <strong>p</strong> в уравнението <strong>p = P(X &lt;= q) </strong></li>
+  <li><code>qnorm(p, mean = 0, sd = 1, lower.tail = TRUE)</code>намира <strong>q</strong> в уравнението <strong>p = P(X &lt;= q) </strong></li>
   </ul>
 </blockquote>
 
@@ -214,12 +211,12 @@ plot(x, y, type = “l”)</p>
 
 <p>Живот на електроуред. <br>
 Времето до поява на първо събитие също е експоненциално разпределено. <br>
-<script type="math/tex; mode=display" id="MathJax-Element-974">
+<script type="math/tex; mode=display" id="MathJax-Element-17">
 f(x) = \lambda \epsilon^{-\lambda x}, x >= 0
-</script><script type="math/tex; mode=display" id="MathJax-Element-975">
+</script><script type="math/tex; mode=display" id="MathJax-Element-18">
 f(x) = 0 , x <0
 </script> <br>
-<script type="math/tex; mode=display" id="MathJax-Element-976">
+<script type="math/tex; mode=display" id="MathJax-Element-19">
 EX = 1/\lambda, VarX = 1/\lambda^2
 </script></p>
 
