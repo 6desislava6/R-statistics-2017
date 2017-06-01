@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>11 - final summary</title>
+    <meta charset="utf-8">
+    <style>
+      @import url(https://fonts.googleapis.com/css?family=Yanone+Kaffeesatz);
+      @import url(https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic);
+      @import url(https://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700,400italic);
+
+      body { font-family: 'Droid Serif'; }
+      h1, h2, h3 {
+        font-family: 'Yanone Kaffeesatz';
+        font-weight: normal;
+      }
+      * {
+        font-size: 26px;
+      }
+      .remark-code, .remark-inline-code { font-family: 'Ubuntu Mono'; }
+    </style>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <script type="text/x-mathjax-config">
+  MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+</script>
+<script type="text/javascript"
+  src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+  </head>
+  <body>
+    <textarea id="source">
+
+class: center, middle
+
+# Summary
+---
+## Централна гранична теорема Central Limit Theorem
+Ако имаме разпределения X1,...Xn, които са независими и еднакворазпределени (т.е. с еднакво разпределение) (i.i.d) случайни величини със средно $\mu$ и стандартно отклонение $\sigma$, то разпределението
+
+$\overline{Xn} = \frac{1}{n} * \sum_{i=1}^n X_i$ е нормално разпределено $N(\mu, \frac {\sigma}{\sqrt{n}})$
+
+$\overline{X} = \sum_{i=1}^n X_i$ е нормално разпределено $N(n\mu, \sigma\sqrt{n})$
+
+От друга страна $\frac {\sigma}{\sqrt{n}}$ се нарича стандартна грешка. 
+---
+# Доверителни интервали
+
+---
+
+Когато имаме пропорции:
+
+```r
+prop.test(x, n, conf.level = \alpha)
+```
+x – брой успешни
+n – големина на извадката
+---
+Когато тестваме за средно и едно от следните условия е изпълнено:
+
+* Ако n е голямо, n > 30, и знаем $\sigma$, д.и.
+* Ако n е голямо, n > 30, и не знаем $\sigma$, $\sigma$ може да заместим с s (извадкова дисперсия)
+* Ако n < 30, знаем $\sigma$ и знаем, че $X_i \sim N(\mu, \sigma) $
+
+Т.е. ползва се или когато знаем $\sigma$, или когато n > 30.
+---
+z-test
+```r
+simple.z.test = function(x,sigma,conf.level=0.95) {
+  n = length(x)
+  xbar = mean(x)
+  alpha = 1 - conf.level
+  zstar = qnorm(1-alpha/2)
+  SE = sigma/sqrt(n)
+  xbar + c(-zstar*SE,zstar*SE)
+}
+
+simple.z.test(x,1.5)
+```
+x – масив от опити на извадката
+---
+* Ако n < 30 и не знаем $\sigma$, но знаем, че $X_i \sim N(\mu, \sigma) $ използваме, че $\overline{Xn} \sim T(n-1)$
+
+```r
+t.test(x, conf.level =…. )
+t.test(x, y, conf.level =…., paired = TRUE, var.equal = TRUE)
+```
+---
+
+* Ако n < 30, не знаем $\sigma$, не можем да допуснем, че са нормално разпределени, тогава правим тест за *медиана*, а не за средно.
+
+```r
+r wilcox.test(x,conf.int=TRUE)
+```
+---
+# Тестове
+
+---
+Те са такива, каквито и при доверителните интервали.
+Използваме p_value-то, което ни дава тестът.
+$p_value < \alpha$
+
+Другият вариант (ако не можем с p_value), проверяваме дали наблюдението (тестовата статистика) попада в К.О. Ние знаем как изглежда К.О. (къде се намира), само трябва да намерим X_cr, като знаем, че лицето на К.О. е $\alpha$.
+
+---
+С коя функция се смяташе лице?
+С коя функция се смяташе квантил?
+С коя функция се смяташе вероятността разпределението да заеме дадена стойност?
+---
+
+# Задачи
+
+---
+# Задача 1
+Производител твърди, че средният живот на крушка е *поне* 10 000 часа. Тествани са 30 крушки, но се оказало, че средно те горят за 9 900 часа. Ако популацията има стандартно отклонение 120 часа, а нивото на съгласуваност е 5%, може ли да оправдаем казаното от производителя?
+---
+Нулева хипотеза: $\mu >= 10_000$
+Алтернативна:  $\mu < 10_000$
+---
+```r
+########## Първа задача
+alpha = .05 
+mu0 = 10000            # hypothesized value 
+sigma = 120            # population standard deviation 
+n = 30                 # sample size 
+xbar = 9900            # sample mean 
+
+
+## Първи начин - p_value без да нормализираме и стандартизираме
+p_value = pnorm(xbar, mean = mu0, sd = sigma/sqrt(n))
+p_value
+```
+---
+```r
+# Втори начин - p_value с нормализираме и стандартизираме (т.е. тестова статистика)
+z = (xbar - mu0)/(sigma/sqrt(n)) 
+pval = pnorm(z) 
+pval                   # lower tail p−value 
+
+# Трети начин - К.О.
+x_cr = qnorm(alpha, mean = mu0, sd = sigma/sqrt(n))
+x_cr
+```
+---
+# Същата задача, ако в условието беше "повече"
+Производител твърди, че средният живот на крушка е *повече* 10 000 часа. Тествани са 30 крушки, но се оказало, че средно те горят за 9 900 часа. Ако популацията има стандартно отклонение 120 часа, а нивото на съгласуваност е 5%, може ли да оправдаем казаното от производителя?
+---
+Нулева хипотеза: $\mu <= 10_000$
+Алтернативна:  $\mu > 10_000$
+---
+```r
+########## Първа задача2
+alpha = .05 
+mu0 = 10000            # hypothesized value 
+sigma = 120            # population standard deviation 
+n = 30                 # sample size 
+xbar = 9900            # sample mean 
+
+
+## Първи начин - p_value без да нормализираме и стандартизираме
+p_value = pnorm(xbar, mean = mu0, sd = sigma/sqrt(n), lower.tail = FALSE)
+p_value
+```
+---
+```r
+# Втори начин - p_value с нормализираме и стандартизираме (т.е. тестова статистика)
+z = (xbar - mu0)/(sigma/sqrt(n)) 
+pval = pnorm(z, lower.tail = FALSE) 
+pval                   # lower tail p−value 
+
+# Трети начин - К.О.
+x_cr = qnorm(alpha, mean = mu0, sd = sigma/sqrt(n), lower.tail = FALSE)
+x_cr
+```
+---
+#Задача 2:
+Средното тегло на кралския пингвин миналата година в антарктическата колония е било 15.4кг. В извадка на 35 пингвина тази година, средното тегло на пингвините била 14.6кг.
+Предположете, че стандартното отклонение на популацията е 2.5кг. При ниво на съгласуваност 5%, можем ли да отхвърлим хипотезата, че средното тегло на пингвините тази година не се е променило?
+---
+$H_0: \mu = 15.4$
+$H_a: \mu /= 15.4$
+---
+```r
+########### Задача 2
+alpha = .05 
+xbar = 14.6            # sample mean 
+mu0 = 15.4             # hypothesized value 
+sigma = 2.5            # population standard deviation 
+n = 35                 # sample size 
+
+
+## Първи начин - p_value без да нормализираме и стандартизираме
+p_value = 2 * pnorm(xbar, mean = mu0, sd = sigma/sqrt(n))
+p_value
+```
+---
+```r
+# Втори начин - p_value с нормализираме и стандартизираме (т.е. тестова статистика)
+pval = 2 * pnorm(z) 
+pval                   # lower tail p−value 
+
+# Трети начин - К.О.
+z = (xbar - mu0)/(sigma/sqrt(n)) 
+x_cr_lower = qnorm(alpha/2) 
+x_cr_upper = qnorm(1 - alpha/2) 
+
+z
+x_cr_lower
+x_cr_upper
+```
+---
+#Задача 3:
+На опаковката на бисквитки пише, че във всяка бисквита има най-много 2 грама мазнини. В извадка от 35 бисквити откричи, че средното количество мазнини е 2.1 гр, а стандартното отклонение на извадката (не на популацията) е 0.3. При ниво на съгласуваност 5% можем ли да опровергаем надписа на бисквитите?
+---
+$H_0: \mu >= 2$
+$H_a: \mu < 2$
+---
+```r
+####### Задача 3
+alpha = .05 
+xbar = 2.1            # sample mean 
+mu0 = 2             # hypothesized value 
+n = 35      
+s = 0.3 
+
+t = (xbar - mu0)/(s/sqrt(n))
+p_value = pt(t, n – 1)
+```
+---
+Задача 4:
+Учен измервал твърдостта на желязото и получил следните 25 резултата: 170 167 174 179 179 156 163 156 187 156 183 179 174 179 170 156 187 179 183 174 187 167 159 170 179
+а) Той предположил, че твърдостта е > 170.
+а) Той предположил, че твърдостта е < 170.
+а) Той предположил, че твърдостта е = 170.
+Съставете хипотези за всяка подточка. Тествайте ги.
+
++ доверителни интервали
+---
+```r
+###### Задача 4
+# 170 167 174 179 179 156 163 156 187 156 183 179 174 179 170 156 187 179 183 174 187 167 159 170 179
+x = scan()
+xbar = mean(x)
+s = sd(x)
+mu0 = 170
+n = length(x)
+
+t = (xbar - mu0)/(s/sqrt(n))
+```
+---
+```r
+# <
+p_value = pt(t, n - 1)
+p_value
+
+# >
+p_value = pt(t, n - 1, lower.tail = FALSE)
+p_value
+
+# =
+p_value = 2 * pt(t, n - 1, lower.tail = FALSE)
+p_value
+
+# д.и.
+t.test(x, alternative = "less")
+t.test(x, alternative = "greater")
+t.test(x)
+```
+---
+# Задача
+Наблюдавани са нива на холестерол преди и след прием на лекарства при едни и същи хора.
+преди: 237 289 257 228 303 275 262 304 244 233
+след: 194 240 230 186 265 222 242 281 240 212
+Има ли подобрение след лекарството?
+(приемете стандартното отклонение за равно и при двете популации)
+---
+$H_0: \mu_1 >= mu_2$
+$H_a: \mu_1 < mu_2$
+---
+```r
+x = c(15, 10, 13, 7, 9, 8, 21, 9, 14, 8)
+y = c(15, 14, 12, 8, 14, 7, 16, 10, 15, 12)
+shapiro.test(x)
+shapiro.test(y)
+
+t.test(x,y,alt="less",var.equal=TRUE, paired = TRUE)
+```
+---
+# Задача
+Наблюдавани са нива на холестерол при хора, които приемат и които не приемат лекарства.
+с лекарство: 237 289 257 228 303 275 262 304 244 233
+без лекарство: 194 240 230 186 265 222 242 281 240 212
+Има ли подобрение при тези, които приемат лекарството?
+---
+```r
+x = c(15, 10, 13, 7, 9, 8, 21, 9, 14, 8)
+y = c(15, 14, 12, 8, 14, 7, 16, 10, 15, 12)
+shapiro.test(x)
+shapiro.test(y)
+
+t.test(x,y,alt="less")
+```
+---
+    </textarea>
+    <script src="https://remarkjs.com/downloads/remark-latest.min.js">
+    </script>
+    <script>
+      var slideshow = remark.create();
+    </script>
+  </body>
+</html>
