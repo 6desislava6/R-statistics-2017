@@ -1,4 +1,4 @@
-library("Simple") # read in library for these notes
+library("UsingR") # read in library for these notes
 data(movies) # read in data set for gross.
 names(movies)
 # [1] "title" "current" "previous" "gross"

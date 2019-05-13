@@ -50,7 +50,7 @@ category = scan()
 boxplot(amount ~ category) 
 
 ##############
-library("Simple")
+library("UsingR")
 data(home)
 attach(home)
 names(home)
